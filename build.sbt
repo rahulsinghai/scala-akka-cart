@@ -4,6 +4,8 @@ ThisBuild / scalaVersion := "3.3.1"
 
 ThisBuild / organization := "com.rahulsinghai"
 
+ThisBuild / githubWorkflowJavaVersions += JavaSpec.temurin("21") // sbt-github-actions defaults to using JDK 8 for testing and publishing. Use JDK 21 instead.
+
 lazy val akkaHttpV = "10.6.0-M1"
 lazy val akkaV = "2.9.0-M2"
 lazy val logbackV = "1.4.11"
@@ -32,7 +34,7 @@ lazy val root = (project in file("."))
 
     Compile / console / scalacOptions --= Seq("-Ywarn-dead-code"),
 
-    Test / scalacOptions --= Seq("-Ywarn-dead-code"),
+    Test / scalacOptions --= Seq("-deprecation", "-Ywarn-dead-code"),
     Test / fork := true, // If you only want to run tests sequentially, but in a different JVM, you can achieve this
-    Test / testForkedParallel := true // If our tests are properly designed, and can run independently, we can execute all of them in parallel by adding an SBT definition file
+    Test / testForkedParallel := true, // If our tests are properly designed, and can run independently, we can execute all of them in parallel by adding an SBT definition file
   )

@@ -29,3 +29,11 @@ You will receive the total cost as a response.
 ```shell
 curl -X POST -H "Content-Type: application/json" -d "[\"Apple\", \"Apple\", \"Orange\", \"Apple\"]" http://localhost:8080/v0/checkout
 ```
+
+## Github action workflow
+
+Generate workflow by adding `sbt-github-actions` plug-in and then running:
+
+```shell
+sbt githubWorkflowGenerate
+```
