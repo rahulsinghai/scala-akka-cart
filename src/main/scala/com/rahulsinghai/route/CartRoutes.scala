@@ -45,20 +45,6 @@ class CartRoutes(cart: ActorRef[Cart.Command])(implicit system: ActorSystem[_]) 
               }
             }
           }
-        },
-        pathPrefix("v1") {
-          post {
-            path("checkout") {
-              // implicit val timeout: Timeout = 2.seconds
-              entity(as[List[String]]) { itemsList =>
-                val result: Future[Cart.Response] = cart.ask(Cart.Checkout(itemsList, _))
-                onSuccess(result) {
-                  case Cart.CheckoutResult(totalCost) => complete(totalCost)
-                  case Cart.KO(reason) => complete(StatusCodes.InternalServerError -> reason)
-                }
-              }
-            }
-          }
         }
       )
     }
