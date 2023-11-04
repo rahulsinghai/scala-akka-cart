@@ -1,5 +1,7 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
+ThisBuild / versionScheme := Some("early-semver")  // https://www.scala-sbt.org/1.x/docs/Publishing.html#Version+scheme
+
 ThisBuild / scalaVersion := "3.3.1"
 
 ThisBuild / organization := "com.rahulsinghai"
@@ -37,4 +39,5 @@ lazy val root = (project in file("."))
     Test / scalacOptions --= Seq("-deprecation", "-Ywarn-dead-code"),
     Test / fork := true, // If you only want to run tests sequentially, but in a different JVM, you can achieve this
     Test / testForkedParallel := true, // If our tests are properly designed, and can run independently, we can execute all of them in parallel by adding an SBT definition file
+    publish / skip := true
   )
