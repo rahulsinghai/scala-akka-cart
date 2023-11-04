@@ -1,0 +1,30 @@
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.m2/repository
+    - $HOME/.sbt
+    - $HOME/.ivy2
+
+language: scala
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION compile test:compile
+  - sbt ++$TRAVIS_SCALA_VERSION -Dakka.test.timefactor=2 'set concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)' clean coverage test coverageReport
+
+  # Trick to avoid unnecessary cache updates
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+
+scala:
+  - 3.3.1
+
+jdk:
+  - openjdk8
+
+notifications:
+  email:
+    - singrahu@gmail.com
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh)
