@@ -4,7 +4,7 @@ ThisBuild / scalaVersion := "3.3.1"
 
 ThisBuild / organization := "com.rahulsinghai"
 
-ThisBuild / githubWorkflowJavaVersions += JavaSpec.temurin("21") // sbt-github-actions defaults to using JDK 8 for testing and publishing. Use JDK 21 instead.
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("21")) // sbt-github-actions defaults to using JDK 8 for testing and publishing. Use JDK 21 instead.
 
 lazy val akkaHttpV = "10.6.0-M1"
 lazy val akkaV = "2.9.0-M2"

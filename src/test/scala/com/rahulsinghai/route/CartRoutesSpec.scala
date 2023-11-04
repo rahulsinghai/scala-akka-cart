@@ -60,7 +60,7 @@ class CartRoutesSpec extends AnyWordSpec with Matchers with ScalatestTypedActorH
     "return a MethodNotAllowed error for PUT requests to the root path" in {
       Put() ~> Route.seal(cartRoutes.cartRoutes) ~> check {
         status shouldEqual StatusCodes.MethodNotAllowed
-        responseAs[String] shouldEqual "HTTP method not allowed, supported methods: GET, POST"
+        responseAs[String] shouldEqual "HTTP method not allowed, supported methods: GET"
       }
     }
 
