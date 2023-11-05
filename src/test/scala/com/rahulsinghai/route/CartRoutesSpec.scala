@@ -75,9 +75,36 @@ class CartRoutesSpec extends AnyWordSpec with Matchers with ScalatestTypedActorH
         responseAs[String] shouldEqual "£0.60"
       }
 
-      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """["Apple", "Apple", "Orange", "Apple"]""")) ~> cartRoutes.cartRoutes ~> check {
+      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """["Banana", "Apple", "Apple", "Orange", "Apple"]""")) ~> cartRoutes.cartRoutes ~> check {
         status shouldEqual StatusCodes.OK
-        responseAs[String] shouldEqual "£2.65"
+        responseAs[String] shouldEqual "£1.45"
+      }
+
+      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """["Orange", "Orange", "Orange", "Orange", "Orange"]""")) ~> cartRoutes.cartRoutes ~> check {
+        status shouldEqual StatusCodes.OK
+        responseAs[String] shouldEqual "£2.20"
+      }
+
+      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """["Apple"]""")) ~> cartRoutes.cartRoutes ~> check {
+        status shouldEqual StatusCodes.InternalServerError
+      }
+
+      // "Total count of items has now gone beyond threshold, any new item will be ignored
+      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """[]""")) ~> cartRoutes.cartRoutes ~> check {
+        status shouldEqual StatusCodes.OK
+        responseAs[String] shouldEqual "£2.20"
+      }
+
+      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """["Apple"]""")) ~> cartRoutes.cartRoutes ~> check {
+        status shouldEqual StatusCodes.InternalServerError
+      }
+
+      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """["Apple", "Apple", "Orange", "Apple"]""")) ~> cartRoutes.cartRoutes ~> check {
+        status shouldEqual StatusCodes.InternalServerError
+      }
+
+      Post("/v0/checkout", HttpEntity(MediaTypes.`application/json`, """["Banana", "Orange", "Orange", "Orange", "Orange", "Orange"]""")) ~> cartRoutes.cartRoutes ~> check {
+        status shouldEqual StatusCodes.InternalServerError
       }
     }
   }

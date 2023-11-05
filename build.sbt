@@ -37,6 +37,9 @@ lazy val root = (project in file("."))
     Compile / console / scalacOptions --= Seq("-Ywarn-dead-code"),
 
     Test / scalacOptions --= Seq("-deprecation", "-Ywarn-dead-code"),
+    // When running tests, we use this configuration
+    Test / javaOptions += s"-Dconfig.file=${sourceDirectory.value}/test/resources/application-test.conf",
+    // We need to fork a JVM process when testing so the Java options above are applied
     Test / fork := true, // If you only want to run tests sequentially, but in a different JVM, you can achieve this
     Test / testForkedParallel := true, // If our tests are properly designed, and can run independently, we can execute all of them in parallel by adding an SBT definition file
     publish / skip := true
